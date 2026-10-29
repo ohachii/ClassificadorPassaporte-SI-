@@ -1,0 +1,10 @@
+x_face,y_face,w_face,h_face,quantidade_palavras,presenca_qrcode,presenca_rostos,qtd_cnh,qtd_rg,qtd_detran,qtd_cpf,qtd_documento,qtd_identidade,qtd_passaporte,qtd_validade,qtd_nacional,qtd_estudante,qtd_matricula,qtd_universidade,qtd_estadual,qtd_une,label_real
+25.0,51.0,116.0,88.0,,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,brasileiro
+26.0,23.0,92.0,136.0,23.0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,brasileiro
+14.0,44.0,116.0,76.0,,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,brasileiro
+63.0,23.0,74.0,62.0,11.0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,estrangeiro
+0.0,0.0,0.0,,12.0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,estrangeiro
+17.0,52.0,57.0,83.0,12.0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,estrangeiro
+0.0,0.0,0.0,0.0,36.0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,invalido
+0.0,0.0,0.0,0.0,24.0,0,0,0,0,0,0,1,0,1,0,0,2,1,0,0,0,invalido
+,,0.0,0.0,31.0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,invalido

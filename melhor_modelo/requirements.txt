@@ -1,0 +1,14 @@
+# Dependências para executar o melhor modelo.
+# Arquivo GERADO por `python main.py treinar`; não edite à mão.
+#
+# O scikit-learn está FIXADO na versão usada no treino: o arquivo
+# modelo.joblib só é garantido nessa versão.
+scikit-learn==1.8.0
+numpy
+pandas
+joblib
+
+# Necessários apenas para classificar IMAGENS (exige também o programa
+# Tesseract instalado no sistema; veja o README.md desta pasta).
+opencv-python-headless
+pytesseract

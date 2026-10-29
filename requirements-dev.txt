@@ -1,0 +1,7 @@
+-r requirements.txt
+
+# Testes automatizados
+pytest>=7
+
+# Necessário para abrir/rodar notebooks (.ipynb) no VS Code
+ipykernel>=6

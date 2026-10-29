@@ -1,0 +1,41 @@
+{
+  // Pressione F5 e escolha uma das configurações abaixo.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1. Treinar e comparar modelos (reproduz o Colab)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "args": ["treinar"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "2. Melhor modelo: demonstração (sem imagem)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/melhor_modelo/predict.py",
+      "args": ["--demo"],
+      "cwd": "${workspaceFolder}/melhor_modelo",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "3. Melhor modelo: classificar uma imagem",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/melhor_modelo/predict.py",
+      "args": ["${input:caminhoImagem}"],
+      "cwd": "${workspaceFolder}/melhor_modelo",
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "caminhoImagem",
+      "type": "promptString",
+      "description": "Caminho da imagem do documento",
+      "default": "exemplos/documento_exemplo_estudante.png"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Dependências do projeto (testado com Python 3.12; versões mínimas verificadas).
+numpy>=1.26
+pandas>=2.2
+scikit-learn>=1.5
+matplotlib>=3.9
+joblib>=1.3
+
+# Extração de características de IMAGENS (face + OCR).
+# Além destes pacotes, é preciso instalar o programa Tesseract no sistema (veja o README).
+opencv-python-headless>=4.8
+pytesseract>=0.3.10

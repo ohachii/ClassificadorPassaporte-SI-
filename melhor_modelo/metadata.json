@@ -1,0 +1,71 @@
+{
+  "modelo": "Random Forest",
+  "classes": [
+    "brasileiro",
+    "estrangeiro",
+    "invalido"
+  ],
+  "features": [
+    "x_face",
+    "y_face",
+    "w_face",
+    "h_face",
+    "quantidade_palavras",
+    "presenca_qrcode",
+    "presenca_rostos",
+    "qtd_cnh",
+    "qtd_rg",
+    "qtd_detran",
+    "qtd_cpf",
+    "qtd_documento",
+    "qtd_identidade",
+    "qtd_passaporte",
+    "qtd_validade",
+    "qtd_nacional",
+    "qtd_estudante",
+    "qtd_matricula",
+    "qtd_universidade",
+    "qtd_estadual",
+    "qtd_une"
+  ],
+  "metricas_teste": {
+    "acuracia": 0.96,
+    "precisao_macro": 0.9643,
+    "recall_macro": 0.96,
+    "f1_macro": 0.9599,
+    "n_teste": 75
+  },
+  "selecao": {
+    "justificativa": "Empate técnico no teste entre: Random Forest, Árvore de Decisão (diferença de F1 macro menor que 1 exemplo de teste = 0.0133). Desempate por validação cruzada 5-fold x 5 repetições nos dados de treino: Random Forest obteve a maior média de F1 macro (0.9786).",
+    "tolerancia_empate": 0.0133,
+    "finalistas": [
+      {
+        "modelo": "Random Forest",
+        "f1_macro_teste": 0.9599,
+        "f1_macro_cv_media": 0.9786,
+        "f1_macro_cv_desvio": 0.0213
+      },
+      {
+        "modelo": "Árvore de Decisão",
+        "f1_macro_teste": 0.96,
+        "f1_macro_cv_media": 0.9492,
+        "f1_macro_cv_desvio": 0.0293
+      }
+    ]
+  },
+  "treino": {
+    "n_treino": 225,
+    "seed": 42,
+    "alvo": "label",
+    "dados": "sintéticos (gerados por classificador/dados/gerador.py)"
+  },
+  "versoes": {
+    "python": "3.12.3",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2",
+    "joblib": "1.5.3"
+  },
+  "gerado_em": "2026-10-29T22:44:24",
+  "aviso": "Modelo treinado com dados SINTÉTICOS. As métricas não comprovam desempenho em documentos reais. Não use para decisões oficiais."
+}
