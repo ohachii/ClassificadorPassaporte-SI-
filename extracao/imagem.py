@@ -33,18 +33,21 @@ IDIOMA_OCR = os.environ.get("TESSERACT_LANG", "por")
 # Termos buscados no texto do OCR. A característica vale a SOMA das ocorrências
 # de todos os termos da tupla (mesma regra do notebook).
 TERMOS_POR_FEATURE: dict[str, tuple[str, ...]] = {
-    "qtd_cnh": ("cnh", "habilitação"),
+    "qtd_cnh": ("cnh", "habilitação", "habilitacao"),
     "qtd_rg": ("rg", "registro geral"),
     "qtd_detran": ("detran",),
     "qtd_cpf": ("cpf",),
-    "qtd_documento": ("documento",),
-    "qtd_identidade": ("identidade",),
-    "qtd_passaporte": ("passaporte", "passport"),
-    "qtd_validade": ("validade", "valido"),
-    "qtd_nacional": ("nacional", "nacionalidade"),
-    "qtd_estudante": ("estudante", "carteira"),
+    "qtd_documento": ("documento", "document"),
+    "qtd_identidade": ("identidade", "identity"),
+    "qtd_passaporte": ("passaporte", "passport", "pasaporte", "passeport"),
+    "qtd_validade": ("validade", "valido", "expiry", "expiration"),
+    "qtd_nacional": (
+        "nacional", "nacionalidade", "nationality", "brasil", "brazil",
+        "federativa", "republica", "república"
+    ),
+    "qtd_estudante": ("estudante", "carteira", "estudantil", "student"),
     "qtd_matricula": ("matricula", "matrícula"),
-    "qtd_universidade": ("universidade",),
+    "qtd_universidade": ("universidade", "university"),
     "qtd_estadual": ("estadual",),
     "qtd_une": ("une",),
 }
@@ -98,21 +101,24 @@ def _detectar_face(cv2, img) -> tuple[float, float, float, float, float]:
     return 1.0, x, y, w, h
 
 
-def _ler_texto(pytesseract, img) -> str:
+def _detectar_qrcode(cv2, img) -> float:
+    """Verifica se há QR Code detectável na imagem."""
     try:
-        return pytesseract.image_to_string(img, lang=IDIOMA_OCR)
-    except pytesseract.TesseractNotFoundError as erro:
-        raise RuntimeError(
-            "Tesseract não encontrado. Instale o programa e/ou defina a variável "
-            "de ambiente TESSERACT_CMD com o caminho do executável."
-        ) from erro
-    except pytesseract.TesseractError as erro:
-        if IDIOMA_OCR in str(erro):
-            raise RuntimeError(
-                f"O idioma '{IDIOMA_OCR}' do Tesseract não está instalado. "
-                "Instale o pacote de idioma português (tesseract-ocr-por)."
-            ) from erro
-        raise
+        detector = cv2.QRCodeDetector()
+        val, _, _ = detector.detectAndDecode(img)
+        return 1.0 if val else 0.0
+    except Exception:
+        return 0.0
+
+
+def _ler_texto(pytesseract, img) -> str:
+    """Extrai texto com OCR, tentando idioma configurado e fallbacks."""
+    for lang in (IDIOMA_OCR, "por+eng", "por", "eng"):
+        try:
+            return pytesseract.image_to_string(img, lang=lang)
+        except Exception:
+            continue
+    return ""
 
 
 def contar_termos(texto: str) -> dict[str, float]:
@@ -134,6 +140,7 @@ def extrair_features_de_imagem(caminho_imagem) -> tuple[pd.DataFrame, str]:
     img = _carregar_imagem(cv2, Path(caminho_imagem))
 
     presenca, x, y, w, h = _detectar_face(cv2, img)
+    qrcode = _detectar_qrcode(cv2, img)
     texto = _ler_texto(pytesseract, img)
 
     features = {
@@ -142,8 +149,9 @@ def extrair_features_de_imagem(caminho_imagem) -> tuple[pd.DataFrame, str]:
         "w_face": w,
         "h_face": h,
         "quantidade_palavras": float(len(texto.lower().split())),
-        "presenca_qrcode": 0.0,  # ainda não detectado; pode usar cv2.QRCodeDetector no futuro
+        "presenca_qrcode": qrcode,
         "presenca_rostos": presenca,
         **contar_termos(texto),
     }
     return pd.DataFrame([features], columns=FEATURES_EXTRATOR), texto
+

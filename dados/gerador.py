@@ -155,3 +155,28 @@ def gerar_dataset(seed: int = SEED, por_classe: int = EXEMPLOS_POR_CLASSE) -> pd
     )
     df = pd.DataFrame(registros, columns=COLUNAS_DATASET)
     return _inserir_nulos(df, rng)
+
+
+def carregar_ou_gerar_dataset(
+    caminho_csv: Path | str | None = None,
+    pasta_imagens: Path | str | None = None,
+    seed: int = SEED,
+    por_classe: int = EXEMPLOS_POR_CLASSE,
+) -> pd.DataFrame:
+    """Carrega o dataset de features reais se existir, extrai de imagens ou gera como fallback."""
+    from classificador.config import CSV_FEATURES
+    caminho = Path(caminho_csv or CSV_FEATURES)
+
+    if pasta_imagens:
+        pasta = Path(pasta_imagens)
+        if pasta.exists():
+            from classificador.dados.extracao_dataset import extrair_dataset_de_imagens
+            return extrair_dataset_de_imagens(pasta, caminho_csv_saida=caminho)
+
+    if caminho.exists() and caminho.stat().st_size > 0:
+        df = pd.read_csv(caminho)
+        if len(df) > 0 and "label" in df.columns:
+            return df
+
+    return gerar_dataset(seed=seed, por_classe=por_classe)
+

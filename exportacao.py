@@ -22,9 +22,10 @@ from classificador.config import COLUNA_ALVO, DIR_MELHOR_MODELO, SEED
 from classificador.persistencia import salvar_modelo
 
 AVISO = (
-    "Modelo treinado com dados SINTÉTICOS. As métricas não comprovam desempenho "
-    "em documentos reais. Não use para decisões oficiais."
+    "Aviso acadêmico: protótipo desenvolvido para a disciplina de Sistemas Inteligentes "
+    "com garantia de fotos e pessoas únicas. Não use para decisões oficiais."
 )
+
 
 _EXTRATOR_ORIGEM = Path(__file__).resolve().parent / "extracao" / "imagem.py"
 

@@ -3,7 +3,7 @@
 #
 # O scikit-learn está FIXADO na versão usada no treino: o arquivo
 # modelo.joblib só é garantido nessa versão.
-scikit-learn==1.8.0
+scikit-learn==1.9.1
 numpy
 pandas
 joblib

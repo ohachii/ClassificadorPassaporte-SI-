@@ -31,11 +31,18 @@ def contar_ausentes(df: pd.DataFrame) -> pd.DataFrame:
     return df.isna().sum().to_frame("ausentes").query("ausentes > 0")
 
 
-def validar_dataset(df: pd.DataFrame, features: list[str]) -> None:
+def validar_dataset(
+    df: pd.DataFrame,
+    features: list[str],
+    linhas_esperadas: int | None = LINHAS_ESPERADAS,
+) -> None:
     """Interrompe com ``ValueError`` se o dataset não estiver como esperado."""
-    if len(df) != LINHAS_ESPERADAS:
-        raise ValueError(f"Esperadas {LINHAS_ESPERADAS} linhas; encontradas {len(df)}.")
+    if len(df) == 0:
+        raise ValueError("O dataset está vazio.")
+    if linhas_esperadas is not None and len(df) != linhas_esperadas:
+        raise ValueError(f"Esperadas {linhas_esperadas} linhas; encontradas {len(df)}.")
     if df[COLUNA_ALVO].nunique() != CLASSES_ESPERADAS:
         raise ValueError(f"Esperadas exatamente {CLASSES_ESPERADAS} classes.")
     if not features:
         raise ValueError("Nenhuma característica numérica encontrada.")
+

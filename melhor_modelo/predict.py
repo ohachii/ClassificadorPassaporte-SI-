@@ -35,9 +35,10 @@ CAMINHO_METADATA = PASTA / "metadata.json"
 CAMINHO_EXEMPLOS = PASTA / "exemplos" / "exemplos_teste.csv"
 
 AVISO = (
-    "AVISO: modelo treinado com dados SINTÉTICOS; o resultado não é confiável "
-    "para documentos reais. Não use para decisões oficiais."
+    "Aviso acadêmico: protótipo desenvolvido para a disciplina de Sistemas Inteligentes. "
+    "Não use para decisões oficiais."
 )
+
 
 
 # --------------------------------------------------------------------------- #

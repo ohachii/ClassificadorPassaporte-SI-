@@ -88,17 +88,27 @@ def executar_experimento(
     pasta_resultados: Path = DIR_RESULTADOS,
     pasta_melhor_modelo: Path = DIR_MELHOR_MODELO,
     arquivo_csv: Path = CSV_FEATURES,
+    pasta_dataset_imagens: Path | str | None = None,
+    usar_dataset_real: bool = True,
 ) -> ResultadoExperimento:
     """Roda o experimento de ponta a ponta."""
     pasta_resultados = Path(pasta_resultados)
     pasta_graficos = pasta_resultados / "graficos"
 
     # 2. Dataset ------------------------------------------------------------ #
-    _titulo("2. Dataset sintético")
-    df = gerar_dataset(SEED)
-    if salvar:
-        salvar_dataset(df, arquivo_csv)
-    print(f"Dataset gerado: {df.shape[0]} linhas x {df.shape[1]} colunas")
+    _titulo("2. Dataset (Passaportes Reais / Features)")
+    if pasta_dataset_imagens and Path(pasta_dataset_imagens).exists():
+        from classificador.dados.extracao_dataset import extrair_dataset_de_imagens
+        print(f"Extraindo características das imagens em {pasta_dataset_imagens}...")
+        df = extrair_dataset_de_imagens(pasta_dataset_imagens, caminho_csv_saida=arquivo_csv if salvar else None)
+    elif usar_dataset_real and Path(arquivo_csv).exists() and Path(arquivo_csv).stat().st_size > 0:
+        print(f"Carregando características de {arquivo_csv}...")
+        df = pd.read_csv(arquivo_csv)
+    else:
+        df = gerar_dataset(SEED)
+        if salvar:
+            salvar_dataset(df, arquivo_csv)
+    print(f"Dataset em uso: {df.shape[0]} linhas x {df.shape[1]} colunas")
 
     # 3. Validação ---------------------------------------------------------- #
     _titulo("3. Validação dos dados")
@@ -107,8 +117,9 @@ def executar_experimento(
     print(contar_por_classe(df).to_string(index=False))
     print("\nValores ausentes (resolvidos pelo Imputer):")
     print(contar_ausentes(df).to_string())
-    validar_dataset(df, features)
+    validar_dataset(df, features, linhas_esperadas=None)
     print(f"\nCaracterísticas numéricas em uso ({len(features)}): {features}")
+
 
     # 4. Treino/teste ------------------------------------------------------- #
     _titulo("4. Separação treino/teste (estratificada)")

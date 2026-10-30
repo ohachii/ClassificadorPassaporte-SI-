@@ -29,10 +29,10 @@
     "qtd_une"
   ],
   "metricas_teste": {
-    "acuracia": 0.96,
-    "precisao_macro": 0.9643,
-    "recall_macro": 0.96,
-    "f1_macro": 0.9599,
+    "acuracia": 0.9733,
+    "precisao_macro": 0.9753,
+    "recall_macro": 0.9733,
+    "f1_macro": 0.9733,
     "n_teste": 75
   },
   "selecao": {
@@ -41,9 +41,9 @@
     "finalistas": [
       {
         "modelo": "Random Forest",
-        "f1_macro_teste": 0.9599,
+        "f1_macro_teste": 0.9733,
         "f1_macro_cv_media": 0.9786,
-        "f1_macro_cv_desvio": 0.0213
+        "f1_macro_cv_desvio": 0.0204
       },
       {
         "modelo": "Árvore de Decisão",
@@ -60,12 +60,12 @@
     "dados": "sintéticos (gerados por classificador/dados/gerador.py)"
   },
   "versoes": {
-    "python": "3.12.3",
-    "scikit-learn": "1.8.0",
-    "numpy": "2.4.4",
-    "pandas": "3.0.2",
-    "joblib": "1.5.3"
+    "python": "3.14.7",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "joblib": "1.6.0"
   },
-  "gerado_em": "2026-10-29T22:44:24",
+  "gerado_em": "2026-10-29T21:18:22",
   "aviso": "Modelo treinado com dados SINTÉTICOS. As métricas não comprovam desempenho em documentos reais. Não use para decisões oficiais."
 }

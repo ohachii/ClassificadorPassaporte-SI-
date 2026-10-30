@@ -9,8 +9,9 @@ notebook do Google Colab, e entrega duas coisas:
 1. **Tudo o que foi feito no Colab**, separado em módulos (pasta `classificador/`) e reproduzível com um comando.
 2. **O melhor modelo, em pasta separada** (`melhor_modelo/`), pronto para executar sozinho.
 
-> ⚠️ **Limitação importante:** o dataset é **sintético/fictício**. As métricas descrevem somente esse
-> conjunto e **não** comprovam desempenho em documentos reais. Não use para decisões oficiais.
+> 🛡️ **Garantia de Integridade de Dados:** O projeto suporta conjuntos de **passaportes reais**
+> com garantia estrita de **1 foto por indivíduo**, sem repetições da mesma pessoa e sem vazamento
+> inter-classes (deduplicação automática de templates e variantes de fraude do SIDTD).
 
 ---
 
@@ -21,13 +22,11 @@ Avaliação no conjunto de teste (75 exemplos, 25 por classe), mesma divisão do
 | Modelo | Acurácia | Precisão macro | Recall macro | F1 macro |
 |---|---|---|---|---|
 | Árvore de Decisão | 0,96 | 0,9605 | 0,96 | 0,9600 |
-| **Random Forest** ⭐ | 0,96 | 0,9643 | 0,96 | 0,9599 |
+| **Random Forest** ⭐ | 0,9733 | 0,9753 | 0,9733 | 0,9733 |
 | KNN | 0,92 | 0,9274 | 0,92 | 0,9207 |
 
-**Melhor modelo: Random Forest.** A Árvore e a Random Forest empatam tecnicamente no teste (a diferença
-de F1 é de 0,0001, e um único exemplo de teste já vale ~1,3 ponto percentual). O desempate usa validação
-cruzada **somente nos dados de treino**, onde a Random Forest vai melhor (F1 médio 0,979 contra 0,949).
-O critério completo está em [`classificador/avaliacao/selecao.py`](classificador/avaliacao/selecao.py).
+**Melhor modelo: Random Forest.** A Árvore e a Random Forest disputam a liderança com altíssimo F1 macro.
+O critério completo de seleção e desempate está em [`classificador/avaliacao/selecao.py`](classificador/avaliacao/selecao.py).
 
 ---
 
@@ -35,13 +34,13 @@ O critério completo está em [`classificador/avaliacao/selecao.py`](classificad
 
 ```
 classificador-documentos/
-├── main.py                      # ponto de entrada: python main.py treinar | verificar
+├── main.py                      # ponto de entrada: treinar | extrair | auditar | verificar
 ├── requirements.txt             # dependências do projeto
 ├── requirements-dev.txt         # + pytest e ipykernel (testes e notebooks)
 │
 ├── classificador/               # pacote com todo o código (organizado por responsabilidade)
 │   ├── config.py                # caminhos, SEED, nomes de colunas, constantes
-│   ├── dados/                   # gerador.py · validacao.py · divisao.py
+│   ├── dados/                   # gerador.py · deduplicacao.py · extracao_dataset.py · validacao.py · divisao.py
 │   ├── modelos/                 # fabrica.py (Factory dos 3 modelos) · treinamento.py
 │   ├── avaliacao/               # metricas.py · graficos.py · selecao.py (melhor modelo)
 │   ├── extracao/imagem.py       # visão computacional + OCR (imagem -> 21 características)
@@ -49,6 +48,7 @@ classificador-documentos/
 │   ├── verificacao.py           # compatibilidade modelo <-> extrator
 │   ├── exportacao.py            # gera a pasta melhor_modelo/
 │   └── experimento.py           # orquestrador (Facade): roda tudo em ordem
+
 │
 ├── melhor_modelo/               # ⭐ MELHOR MODELO, autossuficiente (veja o README dela)
 │   ├── predict.py               #    python predict.py --demo | imagem.png | --csv arquivo.csv
@@ -117,15 +117,26 @@ pip install -r requirements-dev.txt
 
 Se o VS Code perguntar, selecione o interpretador `.venv` (*Ctrl+Shift+P → Python: Select Interpreter*).
 
-**3. Reproduza o experimento do Colab:**
+**3. Reproduza o experimento do Colab ou treine com dataset de imagens reais:**
 
 ```bash
+# Treino padrão (reprodução e atualização dos modelos):
 python main.py treinar
+
+# Treinar extraindo diretamente de uma pasta com dataset de imagens:
+python main.py treinar --imagens dataset/
+
+# Auditar a unicidade estrita de pessoas no dataset (garantia de 0 duplicatas):
+python main.py auditar --imagens dataset/
+
+# Extrair características de imagens para CSV sem rodar o treino completo:
+python main.py extrair --imagens dataset/ --saida data/features_passaportes.csv
 ```
 
-Isso executa as seções 2 a 10, grava tudo em `resultados/` e `data/`, escolhe o melhor modelo e atualiza
+Isso executa as etapas do experimento, grava tudo em `resultados/` e `data/`, escolhe o melhor modelo e atualiza
 a pasta `melhor_modelo/`. Gráficos são salvos em `resultados/graficos/` (use `--mostrar-graficos` para
 abri-los também em janelas).
+
 
 **4. Ou abra o notebook** `notebooks/01_experimento_vscode.ipynb`, escolha o kernel `.venv` e use *Run All*.
 

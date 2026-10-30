@@ -9,7 +9,7 @@ from pathlib import Path
 # --------------------------------------------------------------------------- #
 # Caminhos (relativos à raiz do projeto, funcionam em Windows, Linux e macOS)
 # --------------------------------------------------------------------------- #
-RAIZ = Path(__file__).resolve().parent.parent
+RAIZ = Path(__file__).resolve().parent
 DIR_DADOS = RAIZ / "data"
 DIR_RESULTADOS = RAIZ / "resultados"
 DIR_MELHOR_MODELO = RAIZ / "melhor_modelo"
